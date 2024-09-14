@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "robotframework-testautomation"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+appdirs = "1.4.4"
+beautifulsoup4 = "4.12.2"
+certifi = "2023.5.7"
+chardet = "5.1.0"
+idna = "3.4"
+lxml = "4.9.2"
+requests = "2.30.0"
+robotframework = "6.0.2"
+robotframework-pythonlibcore = "4.1.2"
+robotframework-seleniumlibrary = "6.3.0"
+selenium = "4.20.0"
+soupsieve = "2.4.1"
+tqdm = "4.65.0"
+urllib3 = "1.26.15"
+allure-robotframework = "^2.13.5"
+robotframework-robocop = "^5.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

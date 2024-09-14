@@ -1,5 +1,5 @@
 *** Settings ***
-Library           Selenium2Library
+Library           SeleniumLibrary
 Library           OperatingSystem
 Library           Collections
 Library           DateTime
@@ -8,43 +8,26 @@ Resource          ../Objects/Locators/CreateAnAccountLocators.robot
 Resource          ../TestData/CreateAnAccountData.robot
 
 *** Keywords ***
-Click SignIn button
-    Wait Until Element Is Visible    ${SignInButton}
-    Click Element    ${SignInButton}
+Enter Account Details
+    [Arguments]    ${username}    ${email}    ${password}
+    Input Text    //input[@name='username']    ${username}
+    Input Text    //input[@name='email']    ${email}
+    Input Text    //input[@name='password']    ${password}
+    Log    Account details entered.
 
-Enter Email Address
-    Wait Until Element Is Visible    ${EmailAddress}
-    ${RandomData}=    Generate Random String    15    [NUMBERS]
-    Input Text    ${EmailAddress}    test${RandomData}@gmail.com
+Enter Invalid Email
+    [Arguments]    ${username}    ${email}    ${password}
+    Input Text    //input[@name='username']    ${username}
+    Input Text    //input[@name='email']    ${email}  # Assuming ${email} contains an invalid email format.
+    Input Text    //input[@name='password']    ${password}
+    Log    Invalid email entered.
 
-Click Create An Account button
-    Click Element    ${CreateAnAccountButton}
+Submit Account Creation
+    Click Button    //button[@name='submit']
+    Wait Until Element Is Visible    //div[@class='account-created']    10
+    Log    Account creation submitted.
 
-Enter Your Personal Information
-    Wait Until Page Contains Element    ${Title}
-    Click Element    ${Title}
-    Wait Until Page Contains Element    ${FirstName} 
-    Input Text    ${FirstName}    ${FirstNameData}
-    Input Text    ${LastName}    ${LastNameData}
-    Input Text    ${Password}    ${PasswordData}
-    
-    Click Element    ${NewsLetterSignup}
-    Click Element    ${SpecialOffer}
+Verify Error Message Is Displayed
+    Element Should Be Visible    //div[@class='error-message']    5
+    Log    Error message displayed as expected.
 
-Enter Your Address
-    Input Text    ${FirstName}    ${FirstNameData}
-    Input Text    ${LastName}    ${LastNameData}
-    Input Text    ${Company}    ${CompanyData}
-    Input Text    ${Address}    ${AddressData}
-    Input Text    ${Address2}    ${Address2Data}
-    Input Text    ${City}    ${CityData}
-    Select From List By Value   ${State}      ${StateData}
-    Input Text    ${ZipCode}    ${ZipCodeData}
-    Input Text    ${AdditionalInformation}    ${AdditionalInformationData}
-    Input Text    ${HomePhone}    ${HomePhoneData}
-    Input Text    ${HomePhone}    ${HomePhoneData}
-    Input Text    ${MobilePhone}    ${MobilePhoneData}
-    Input Text    ${AssignAnAddressAlias}    ${AssignAnAddressAliasData}
-
-Click Register button
-    Click Element    ${Register}

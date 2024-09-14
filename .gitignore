@@ -110,3 +110,4 @@ driver/
 TestReport/*
 *.html
 *.xml
+poetry.lock

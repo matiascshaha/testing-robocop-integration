@@ -1,3 +1,3 @@
 *** Variables ***
-${AppURL}         http://automationpractice.com/index.php
+${AppURL}         https${CURDIR}
 ${Browser}        Chrome
