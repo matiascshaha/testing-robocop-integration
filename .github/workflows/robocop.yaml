@@ -29,7 +29,7 @@ jobs:
       - name: List files in currents directory (debugging step)
         run: ls -la
 
-      - name: Output SARIF file for inspection
+      - name: Output SARIF file for inspectionf
         run: cat .sarif.json
 
       - name: Upload SARIF file to GitHub
