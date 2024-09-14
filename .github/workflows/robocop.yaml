@@ -26,7 +26,7 @@ jobs:
           mkdir -p reports
           python -m robocop --report sarif .
 
-      - name: List files in current directory (debugging step)
+      - name: List files in currents directory (debugging step)
         run: ls -la
 
       - name: Output SARIF file for inspection
