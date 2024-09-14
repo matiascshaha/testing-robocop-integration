@@ -11,8 +11,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    # continue even if Robocop returns issues and fails step
-    continue-on-error: true
     permissions:
       # required for issues to be recorded
       security-events: write
@@ -50,12 +48,16 @@ jobs:
       # clean up robot code
       - name: Robot cleanliness
         run: |
-          echo "🧹 Cleaning up robot code stink with robotidy library..."
+          echo "🧹 Cleaning up Robot code with Robotidy..."
           poetry run robotidy .
+          echo "🔍 Linting Robot code with Robocop..."
           poetry run python -m robocop --reports sarif .
+        # Allow the job to continue even if this step fails
+        continue-on-error: true
 
       # Upload artifacts (even if robocop step fails)
       - name: Upload SARIF file
+        if: always()
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: .sarif.json
