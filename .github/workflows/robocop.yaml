@@ -14,6 +14,8 @@ jobs:
     permissions:
       # required for issues to be recorded
       security-events: write
+    # Allow the job to continue even if the robocop step fails
+    continue-on-error: true
     strategy:
       matrix:
         python-version: [3.12]
@@ -52,8 +54,6 @@ jobs:
           poetry run robotidy .
           echo "🔍 Linting Robot code with Robocop..."
           poetry run python -m robocop --reports sarif .
-        # Allow the job to continue even if this step fails
-        continue-on-error: true
 
       # Upload artifacts (even if robocop step fails)
       - name: Upload SARIF file
