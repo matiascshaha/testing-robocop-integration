@@ -49,5 +49,5 @@ jobs:
         if: always()
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: reports/robocop-output.sarif
+          sarif_file: .sarif.json
           category: robocop
