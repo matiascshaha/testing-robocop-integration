@@ -24,13 +24,16 @@ jobs:
       - name: Run robocop and generate SARIF output
         run: |
           mkdir -p reports
-          python -m robocop --reports sarif --output reports/robocop-output.sarif . || true
+          python -m robocop --report sarif .
 
-      - name: List files in reports directory (debugging step)
-        run: ls -la reports
+      - name: List files in current directory (debugging step)
+        run: ls -la
+
+      - name: Output SARIF file for inspection
+        run: cat .sarif.json
 
       - name: Upload SARIF file to GitHub
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: reports/robocop-output.sarif
+          sarif_file: .sarif.json
           category: robocop
