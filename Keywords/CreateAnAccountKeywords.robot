@@ -9,7 +9,7 @@ Resource    ../TestData/CreateAnAccountData.robot
 
 
 *** Keywords ***
-Enter Account Detailss
+Enter Account Detailssd
     [Arguments]    ${username}    ${email}    ${password}
     Input Text    //input[@name='username']    ${username}
     Input Text    //input[@name='email']    ${email}
