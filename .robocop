@@ -1,0 +1,7 @@
+[robocop]
+# Set threshold to 'E' to make warnings (W) and infos (I) as critical as errors
+threshold = E
+
+# You can also specify more detailed rules if necessary:
+# Disable specific rules if needed, for example:
+# enable = 0201, 0202, 0301
