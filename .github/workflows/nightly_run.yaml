@@ -28,7 +28,7 @@ jobs:
           # Install Poetry
           curl -sSL https://install.python-poetry.org | python3 -
           # Install only the production dependencies (no dev dependencies)
-          poetry install --no-dev
+          poetry install --only main
 
       # Initialize the Browser library drivers (important for the Robot Framework)
       - name: Initialize Browser library
@@ -43,6 +43,7 @@ jobs:
       # Upload test reports as artifacts
       - name: Upload Robot Framework reports
         uses: actions/upload-artifact@v3
+        if: always()
         with:
           name: Robot Framework Reports
-          path: results/
+          path: ./
