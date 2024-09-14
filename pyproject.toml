@@ -27,6 +27,9 @@ robotframework-robocop = "^5.4.0"
 robotframework-tidy = "^4.14.0"
 pre-commit = "^3.8.0"
 
+[tool.poetry.group.dev.dependencies]
+black = "^24.8.0"
+
 [tool.robocop]
 paths = [
     "tests\\atest\\rules\\bad-indent",
