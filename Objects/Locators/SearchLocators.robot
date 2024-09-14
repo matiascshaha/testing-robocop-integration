@@ -1,4 +1,4 @@
 *** Variables ***
-${SearchQuery}              //input[@name='search_query']
-${SearchSubmitButton}       //button[@name='submit_search']
-${SearchResultKeyword}      //span[@class='lighter']
+${SEARCH_QUERY}              //input[@name='search_query']
+${SEARCH_SUBMIT_BUTTON}       //button[@name='submit_search']
+${SEARCH_RESULT_KEYWORD}      //span[@class='lighter']

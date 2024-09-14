@@ -1,9 +1,9 @@
 *** Settings ***
-Library     SeleniumLibrary
 Library     OperatingSystem
 Library     Collections
 Library     DateTime
 Library     String
+Library     SeleniumLibrary
 Resource    ../Objects/Locators/CreateAnAccountLocators.robot
 Resource    ../TestData/CreateAnAccountData.robot
 

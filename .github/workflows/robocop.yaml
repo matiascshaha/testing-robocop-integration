@@ -47,6 +47,11 @@ jobs:
           echo "🧹 Cleaning up python code stink with black library..."
           poetry run black .
 
+      - name: Check Robocop Configuration
+        run: |
+          echo "🔍 Checking active Robocop rules and configurations..."
+          poetry run robocop --list
+
       # clean up robot code
       - name: Robot cleanliness
         run: |

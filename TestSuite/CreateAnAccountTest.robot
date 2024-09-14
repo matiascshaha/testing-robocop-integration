@@ -1,9 +1,9 @@
 *** Settings ***
+Library             BuiltIn
 Library             SeleniumLibrary
 Library             AllureLibrary
 Resource            ../Keywords/LaunchApplication.robot
 Resource            ../Keywords/CreateAnAccountKeywords.robot
-Library             BuiltIn
 
 Suite Setup         Setup Suite
 Suite Teardown      Teardown Suite
@@ -19,12 +19,7 @@ ${BROWSER}      Chrome
 *** Test Cases ***
 Create A New Account With Valid Details
     [Documentation]    Verify that a user can create an account with valid details.
-    [Tags]
-    ...    allure.label.parentsuite:web interface
-    ...    allure.label.suite:essential features
-    ...    allure.label.subsuite:authentication
-    ...    allure.label.epic:account creation
-    ...    allure.label.feature:valid account creation
+    [Tags]    hello
     Launch Application
     Enter Account Details    username    user@example.com    Password123
     Submit Account Creation
@@ -33,12 +28,7 @@ Create A New Account With Valid Details
 
 Create An Account With Invalid Email
     [Documentation]    Verify that the system rejects account creation with an invalid email address.
-    [Tags]
-    ...    allure.label.parentsuite:web interface
-    ...    allure.label.suite:essential features
-    ...    allure.label.subsuite:authentication
-    ...    allure.label.epic:account creation
-    ...    allure.label.feature:invalid account creation
+    [Tags]    hello2
     Launch Application
     Enter Account Details    username    invalid-email    Password123
     Submit Account Creation

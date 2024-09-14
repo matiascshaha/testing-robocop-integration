@@ -7,6 +7,7 @@ Test Teardown       Clear SUT To Initial State
 
 *** Test Cases ***
 SearchTestffeeg
+    [Documentation]    yolo bolo
     Launch Application
     Search a Keyword
     Verify Search Result Page is shown
