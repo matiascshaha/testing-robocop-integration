@@ -30,6 +30,13 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      # Cache Poetry Virtual Environment
+      - name: Cache Poetry Virtual Environment
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: ${{ runner.os }}-poetry-venv-${{ hashFiles('**/poetry.lock') }}
+
       # Install Poetry and project dependencies (including dev dependencies)
       - name: Install Poetry and dependencies
         run: |
@@ -55,9 +62,14 @@ jobs:
       # clean up robot code
       - name: Robot cleanliness
         run: |
+          echo "⚙️ Robotidy Configuration..."
+          echo "We will be using this configuration to clean up your robot code. Any remaining code stink that robotidy doesn't support will have to be manually corrected."
+          echo "📄 For more information on Robotidy transformers, visit: https://robotidy.readthedocs.io/en/latest/transformers/"
+          poetry run robotidy --list
           echo "🧹 Cleaning up Robot code with Robotidy..."
           poetry run robotidy .
           echo "🔍 Linting Robot code with Robocop..."
+          echo "📄 For more information on Robocop error codes, visit: https://robocop.readthedocs.io/en/stable/rules_list.html"
           poetry run python -m robocop --reports sarif .
 
       # Upload artifacts (even if robocop step fails)

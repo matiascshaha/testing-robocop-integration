@@ -23,6 +23,25 @@ pytest-cov = "^4.0.0"  # Optional addition for test coverage
 robotframework-robocop = "^5.4.0"
 robotframework-tidy = "^4.14.0"
 
+# Robotidy Configuration (commented out)
+# [tool.robotidy]
+# space_count = 4  # Use 4 spaces
+# line_length = 120  # Max line length
+
+# [tool.robotidy.transformers]
+# AlignVariablesSection = { up_to_column = 4 }
+# NormalizeAssignments = { equal_sign_type = "right" }
+
+#[tool.robocop]
+#include = ["0101", "0203"]  # Include specific rules
+#exclude = ["0401"]  # Exclude specific rules
+#ignore = ["tests/*"]  # Ignore certain directories or files
+#
+#[tool.robocop.threshold]
+#info = 5
+#warning = 10
+#error = 15
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
