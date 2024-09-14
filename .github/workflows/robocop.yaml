@@ -50,7 +50,7 @@ jobs:
         run: |
           set -e
           echo "🧹 Running Robotidy to clean up the code..."
-          poetry run robotidy src/camsTest || true
+          poetry run robotidy . || true
 
           echo "🔍 Running Robocop to check for linting issues..."
           poetry run robocop --reports sarif . || EXIT_CODE=$?
