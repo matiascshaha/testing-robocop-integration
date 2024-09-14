@@ -27,8 +27,8 @@ jobs:
         run: |
           mkdir -p reports
           # Run Robocop and capture exit code, but don't fail the step yet
-          python -m robocop --report sarif --output reports/robocop-output.sarif . || true
-          
+          python -m robocop --report sarif --output reports/robocop-output.sarif .
+
       - name: List files in current directory (debugging step)
         run: ls -la
 
@@ -37,7 +37,7 @@ jobs:
 
       - name: Upload SARIF file to GitHub
         if: always()
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: .sarif.json
           category: robocop
