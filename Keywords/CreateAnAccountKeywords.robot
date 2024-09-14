@@ -1,14 +1,15 @@
 *** Settings ***
-Library           SeleniumLibrary
-Library           OperatingSystem
-Library           Collections
-Library           DateTime
-Library           String
-Resource          ../Objects/Locators/CreateAnAccountLocators.robot
-Resource          ../TestData/CreateAnAccountData.robot
+Library     OperatingSystem
+Library     Collections
+Library     DateTime
+Library     String
+Library     SeleniumLibrary
+Resource    ../Objects/Locators/CreateAnAccountLocators.robot
+Resource    ../TestData/CreateAnAccountData.robot
+
 
 *** Keywords ***
-Enter Account Details
+Enter Account Detailssd
     [Arguments]    ${username}    ${email}    ${password}
     Input Text    //input[@name='username']    ${username}
     Input Text    //input[@name='email']    ${email}
@@ -18,7 +19,7 @@ Enter Account Details
 Enter Invalid Email
     [Arguments]    ${username}    ${email}    ${password}
     Input Text    //input[@name='username']    ${username}
-    Input Text    //input[@name='email']    ${email}  # Assuming ${email} contains an invalid email format.
+    Input Text    //input[@name='email']    ${email}    # Assuming ${email} contains an invalid email format.
     Input Text    //input[@name='password']    ${password}
     Log    Invalid email entered.
 
@@ -30,4 +31,3 @@ Submit Account Creation
 Verify Error Message Is Displayed
     Element Should Be Visible    //div[@class='error-message']    5
     Log    Error message displayed as expected.
-

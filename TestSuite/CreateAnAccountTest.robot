@@ -1,27 +1,25 @@
 *** Settings ***
-Library         SeleniumLibrary
-Library         AllureLibrary
-Suite Setup     Setup Suite
-Suite Teardown  Teardown Suite
-Test Setup      Setup Test
-Test Teardown   Teardown Test
-Resource        ../Keywords/LaunchApplication.robot
-Resource        ../Keywords/CreateAnAccountKeywords.robot
-Library         BuiltIn
+Library             BuiltIn
+Library             SeleniumLibrary
+Library             AllureLibrary
+Resource            ../Keywords/LaunchApplication.robot
+Resource            ../Keywords/CreateAnAccountKeywords.robot
+
+Suite Setup         Setup Suite
+Suite Teardown      Teardown Suite
+Test Setup          Setup Test
+Test Teardown       Teardown Test
+
+
 *** Variables ***
 ${URL}          https://example.com
 ${BROWSER}      Chrome
 
+
 *** Test Cases ***
-
-
 Create A New Account With Valid Details
-    [Tags]    allure.label.parentSuite:Web Interface
-    ...       allure.label.suite:Essential Features
-    ...       allure.label.subSuite:Authentication
-    ...       allure.label.epic:Account Creation
-    ...       allure.label.feature:Valid Account Creation
     [Documentation]    Verify that a user can create an account with valid details.
+    [Tags]    hello
     Launch Application
     Enter Account Details    username    user@example.com    Password123
     Submit Account Creation
@@ -29,18 +27,15 @@ Create A New Account With Valid Details
     [Teardown]    Clear SUT To Initial State
 
 Create An Account With Invalid Email
-    [Tags]    allure.label.parentSuite:Web Interface
-    ...       allure.label.suite:Essential Features
-    ...       allure.label.subSuite:Authentication
-    ...       allure.label.epic:Account Creation
-    ...       allure.label.feature:Invalid Account Creation
     [Documentation]    Verify that the system rejects account creation with an invalid email address.
+    [Tags]    hello2
     Launch Application
     Enter Account Details    username    invalid-email    Password123
     Submit Account Creation
     Capture Page Screenshot
     Verify Error Message Is Displayed
     [Teardown]    Clear SUT To Initial State
+
 
 *** Keywords ***
 Setup Suite

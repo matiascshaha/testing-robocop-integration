@@ -1,14 +1,13 @@
 *** Settings ***
-Suite Setup
-Suite Teardown
-Resource          ../Keywords/LaunchApplication.robot
-Resource          ../Keywords/SearchKeywords.robot
+Resource            ../Keywords/LaunchApplication.robot
+Resource            ../Keywords/SearchKeywords.robot
 
-*** Settings ***
-Test Teardown    Clear SUT To Initial State
+Test Teardown       Clear SUT To Initial State
+
 
 *** Test Cases ***
-SearchTest
+SearchTestffeeg
+    [Documentation]    yolo bolo
     Launch Application
     Search a Keyword
     Verify Search Result Page is shown

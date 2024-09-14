@@ -1,3 +1,3 @@
 *** Variables ***
-${AppURL}         https${CURDIR}
-${Browser}        Chrome
+${APP_URL}       https${CURDIR}
+${BROWSER}      Chrome

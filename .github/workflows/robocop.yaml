@@ -1,30 +1,85 @@
-name: Run Robocop
+name: CI Pipeline
 
 on:
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    # continue even if Robocop returns issues and fails step
-    continue-on-error: true
     permissions:
       # required for issues to be recorded
       security-events: write
+    # Allow the job to continue even if the robocop step fails
+    continue-on-error: true
+    strategy:
+      matrix:
+        python-version: [3.12]
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Install dependencies
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up Python based on matrix version
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Cache Poetry Virtual Environment
+      - name: Cache Poetry Virtual Environment
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pypoetry/virtualenvs
+          key: ${{ runner.os }}-poetry-venv-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-venv-
+
+      # Install Poetry and project dependencies (including dev dependencies)
+      - name: Install Poetry and dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install robotframework-robocop
-      - name: Run robocop
-        run: python -m robocop --reports sarif .
+          # Install Poetry
+          curl -sSL https://install.python-poetry.org | python3 -
+          # Install dependencies
+          poetry install --with dev
+
+      # Run tests using pytest with coverage
+      - name: Run tests
+        run: |
+          poetry run pytest --cov
+
+      # clean up python code
+      - name: Python cleanliness
+        run: |
+          echo "🧹 Cleaning up python code stink with black library..."
+          poetry run black .
+
+      - name: Check Robocop Configuration
+        run: |
+          echo "🔍 Checking active Robocop rules and configurations..."
+          poetry run robocop --list
+
+      # clean up robot code
+      - name: Robot cleanliness
+        run: |
+          echo "⚙️ Robotidy Configuration..."
+          echo "We will be using this configuration to clean up your robot code. Any remaining code stink that robotidy doesn't support will have to be manually corrected."
+          echo "📄 For more information on Robotidy transformers, visit: https://robotidy.readthedocs.io/en/latest/transformers/"
+          poetry run robotidy --list
+          echo "🧹 Cleaning up Robot code with Robotidy..."
+          poetry run robotidy .
+          echo "🔍 Linting Robot code with Robocop..."
+          echo "📄 For more information on Robocop error codes, visit: https://robocop.readthedocs.io/en/stable/rules_list.html"
+          poetry run python -m robocop --reports sarif .
+
+      # Upload artifacts (even if robocop step fails)
       - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: .sarif.json
           category: robocop

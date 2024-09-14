@@ -1,11 +1,12 @@
 *** Settings ***
-Library           SeleniumLibrary
-Library           OperatingSystem
-Library           Collections
-Library           DateTime
-Library           String
-Resource          ../Objects/Locators/SearchLocators.robot
-Resource          ../TestData/SearchData.robot
+Library     OperatingSystem
+Library     Collections
+Library     DateTime
+Library     String
+Library     SeleniumLibrary
+Resource    ../Objects/Locators/SearchLocators.robot
+Resource    ../TestData/SearchData.robot
+
 
 *** Keywords ***
 Search a Keyword
