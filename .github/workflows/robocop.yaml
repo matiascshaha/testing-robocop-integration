@@ -9,27 +9,29 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # continue even if Robocop returns issues and fails step
-    continue-on-error: true
+    continue-on-error: false
     permissions:
-      # required for issues to be recorded
       security-events: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Set up Python
+        run: python -m pip install --upgrade pip
+
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install robotframework-robocop
+        run: pip install robotframework-robocop
+
       - name: Run robocop and generate SARIF output
         run: |
           mkdir -p reports
-          python -m robocop --report sarif .
+          python -m robocop --report sarif . || true
 
-      - name: List files in currents directory (debugging step)
+      - name: List files in current directory (debugging step)
         run: ls -la
 
-      - name: Output SARIF file for inspectionf
+      - name: Output SARIF file for inspection
         run: cat .sarif.json
 
       - name: Upload SARIF file to GitHub
