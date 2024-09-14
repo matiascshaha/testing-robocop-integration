@@ -23,6 +23,8 @@ tqdm = "4.65.0"
 urllib3 = "1.26.15"
 allure-robotframework = "^2.13.5"
 robotframework-robocop = "^5.4.0"
+robotframework-tidy = "^4.14.0"
+pre-commit = "^3.8.0"
 
 [tool.robocop]
 paths = [

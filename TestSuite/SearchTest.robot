@@ -1,11 +1,9 @@
 *** Settings ***
-Suite Setup
-Suite Teardown
-Resource          ../Keywords/LaunchApplication.robot
-Resource          ../Keywords/SearchKeywords.robot
+Resource            ../Keywords/LaunchApplication.robot
+Resource            ../Keywords/SearchKeywords.robot
 
-*** Settings ***
-Test Teardown    Clear SUT To Initial State
+Test Teardown       Clear SUT To Initial State
+
 
 *** Test Cases ***
 SearchTestffeeg

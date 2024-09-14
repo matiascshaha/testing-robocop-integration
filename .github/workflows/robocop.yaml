@@ -1,52 +1,73 @@
-name: Run Robocop
+name: CI Pipeline
 
 on:
   pull_request:
-    branches: [ main ]
-  push:
-    branches: [ main ]
+    branches:
+      - main
+      - develop  # Add other branches as needed
 
 jobs:
-  build:
+  code_quality:
     runs-on: ubuntu-latest
-    continue-on-error: false
-    permissions:
-      security-events: write
 
     steps:
-      - name: Checkout repository
+      # Step 1: Checkout the code
+      - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Set up Python environment
       - name: Set up Python
-        run: python -m pip install --upgrade pip
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'  # Specify your Python version
 
+      # Step 3: Install Poetry
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
-          export PATH="$HOME/.local/bin:$PATH"
-          poetry --version  # Confirm Poetry installation
+          echo "${HOME}/.local/bin" >> $GITHUB_PATH
 
-      - name: Install dependencies with Poetry
+      # Step 4: Install dependencies using Poetry
+      - name: Install dependencies
         run: |
-          export PATH="$HOME/.local/bin:$PATH"
           poetry install
 
-
-      - name: Run robocop and generate SARIF output
-        run: |
-          mkdir -p reports
-          # Run Robocop and capture exit code, but don't fail the step yet
-          poetry run robocop --report sarif --output reports/roboco-output.sarif .
-
-      - name: List files in current directory (debugging step)
-        run: poetry run ls -la
-
-      - name: Output SARIF file for inspection
-        run: poetry run cat reports/robocop-output.sarif
-
-      - name: Upload SARIF file to GitHub
-        if: always()
-        uses: github/codeql-action/upload-sarif@v3
+      # Step 5: Run Robocop with ReviewDog
+      - name: Run Robocop with ReviewDog
+        uses: reviewdog/action-shellcheck@v1
         with:
-          sarif_file: .sarif.json
-          category: robocop
+          reporter: github-pr-review
+          fail_on_error: true
+          filter_mode: added
+          workdir: .
+          command: poetry run robocop --format=parsable .
+          format: "%f:%l:%c: %m"
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 6: Check code formatting with Robotidy
+      - name: Check code formatting with Robotidy
+        id: robotidy_check
+        run: |
+          poetry run robotidy --check .
+        continue-on-error: true
+
+      # Step 7: Run Robotidy and generate diff if formatting issues are found
+      - name: Generate Robotidy diff
+        if: steps.robotidy_check.outcome == 'failure'
+        run: |
+          poetry run robotidy --diff . > robotidy.diff
+
+      # Step 8: Use ReviewDog to comment on formatting issues
+      - name: Comment on formatting issues with ReviewDog
+        if: steps.robotidy_check.outcome == 'failure'
+        uses: reviewdog/action-suggester@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          diff: robotidy.diff
+
+      # Step 9: Fail the job if formatting issues are found
+      - name: Fail if formatting issues are found
+        if: steps.robotidy_check.outcome == 'failure'
+        run: |
+          echo "Code formatting issues detected."
+          exit 1

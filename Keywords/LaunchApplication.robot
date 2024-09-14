@@ -1,6 +1,7 @@
 *** Settings ***
-Resource          ../TestData/TestConfig.robot
-Library           SeleniumLibrary
+Resource    ../TestData/TestConfig.robot
+Library     SeleniumLibrary
+
 
 *** Keywords ***
 Launch Application
