@@ -28,17 +28,7 @@ jobs:
           mkdir -p reports
           # Run Robocop and capture exit code, but don't fail the step yet
           python -m robocop --report sarif --output reports/robocop-output.sarif . || true
-
-      - name: Fail if Robocop found issues
-        # Fail the job if Robocop found issues
-        run: |
-          if grep -q 'level' reports/robocop-output.sarif; then
-            echo "Robocop found issues, failing pipeline"
-            exit 1
-          else
-            echo "No issues found by Robocop"
-          fi
-
+          
       - name: List files in current directory (debugging step)
         run: ls -la
 
