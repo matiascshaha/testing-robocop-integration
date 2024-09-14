@@ -47,12 +47,23 @@ jobs:
 
       # clean up robot code
       - name: Robot cleanliness
-        continue-on-error: true
         run: |
-          echo "🧹 Cleaning up robot code stink with robotidy library..."
-          poetry run robotidy
-          poetry run python -m robocop --reports sarif .
+          set -e
+          echo "🧹 Running Robotidy to clean up the code..."
+          poetry run robotidy src/camsTest || true
 
+          echo "🔍 Running Robocop to check for linting issues..."
+          poetry run robocop --reports sarif . || EXIT_CODE=$?
+
+          if [ -n "$EXIT_CODE" ]; then
+            echo "❌ Robocop found issues. Failing this step to block PR merge."
+            exit $EXIT_CODE
+          else
+            echo "✅ Robocop found no issues."
+          fi
+        continue-on-error: true
+
+      # Upload artifacts (even if robocop step fails)
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
         with:
