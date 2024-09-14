@@ -26,16 +26,28 @@ jobs:
       - name: Run robocop and generate SARIF output
         run: |
           mkdir -p reports
-          python -m robocop --report sarif . || true
+          # Run Robocop and capture exit code, but don't fail the step yet
+          python -m robocop --report sarif --output reports/robocop-output.sarif . || true
+
+      - name: Fail if Robocop found issues
+        # Fail the job if Robocop found issues
+        run: |
+          if grep -q 'level' reports/robocop-output.sarif; then
+            echo "Robocop found issues, failing pipeline"
+            exit 1
+          else
+            echo "No issues found by Robocop"
+          fi
 
       - name: List files in current directory (debugging step)
         run: ls -la
 
       - name: Output SARIF file for inspection
-        run: cat .sarif.json
+        run: cat reports/robocop-output.sarif
 
       - name: Upload SARIF file to GitHub
+        if: always()
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: .sarif.json
+          sarif_file: reports/robocop-output.sarif
           category: robocop
