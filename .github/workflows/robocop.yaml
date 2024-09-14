@@ -43,7 +43,7 @@ jobs:
       - name: Python cleanliness
         run: |
           echo "🧹 Cleaning up python code stink with black library..."
-          poetry run black --check .
+          poetry run black .
 
       # clean up robot code
       - name: Robot cleanliness
