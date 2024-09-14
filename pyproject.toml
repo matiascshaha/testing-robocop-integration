@@ -1,57 +1,27 @@
 [tool.poetry]
 name = "robotframework-testautomation"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "fwefwe"
+authors = ["rwe7 <cj364rwe57@google.com>"]
 readme = "README.md"
 package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.10"
-appdirs = "1.4.4"
-beautifulsoup4 = "4.12.2"
-certifi = "2023.5.7"
-chardet = "5.1.0"
-idna = "3.4"
-lxml = "4.9.2"
-requests = "2.30.0"
-robotframework = "6.0.2"
-robotframework-pythonlibcore = "4.1.2"
-robotframework-seleniumlibrary = "6.3.0"
-selenium = "4.20.0"
-soupsieve = "2.4.1"
-tqdm = "4.65.0"
-urllib3 = "1.26.15"
+python = "^3.12"
+robotframework = "^7.1"
+robotframework-browser = "^18.8.0"
 allure-robotframework = "^2.13.5"
-robotframework-robocop = "^5.4.0"
-robotframework-tidy = "^4.14.0"
-pre-commit = "^3.8.0"
+pytz = "^2024.2"
+pyyaml = "^6.0.2"
+python-keycloak = "^4.3.0"
+robotframework-jsonlibrary = "^0.5"
 
 [tool.poetry.group.dev.dependencies]
 black = "^24.8.0"
-
-[tool.robocop]
-paths = [
-    "tests\\atest\\rules\\bad-indent",
-    "tests\\atest\\rules\\duplicated-library"
-]
-include = ['W0504', '*doc*']
-exclude = ["0203"]
-reports = [
-    "rules_by_id",
-    "scan_timer"
-]
-ignore = ["ignore_me.robot"]
-ext-rules = ["path_to_external\\dir"]
-filetypes = [".txt", ".tsv"]
-threshold = "E"
-format = "{source}:{line}:{col} [{severity}] {rule_id} {desc} (name)"
-output = "robocop.log"
-configure = [
-    "line-too-long:line_length:150",
-    "0201:severity:E"
-]
-persistent = true
+pytest = "^8.3.3"
+pytest-cov = "^4.0.0"  # Optional addition for test coverage
+robotframework-robocop = "^5.4.0"
+robotframework-tidy = "^4.14.0"
 
 [build-system]
 requires = ["poetry-core"]
