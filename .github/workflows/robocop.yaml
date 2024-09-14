@@ -9,22 +9,28 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # continue even if Robocop returns issues and fails step
-    continue-on-error: true
+    continue-on-error: false # Fail if issues are found, can be adjusted if needed
     permissions:
-      # required for issues to be recorded
+      # Required for uploading SARIF files
       security-events: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Set up Python
+        run: python -m pip install --upgrade pip
+
       - name: Install dependencies
+        run: pip install robotframework-robocop
+
+      - name: Run robocop and generate SARIF output
         run: |
-          python -m pip install --upgrade pip
-          pip install robotframework-robocop
-      - name: Run robocop
-        run: python -m robocop --reports sarif .
-      - name: Upload SARIF file
+          mkdir -p reports
+          python -m robocop --report sarif --output reports/robocop-output.sarif .
+
+      - name: Upload SARIF file to GitHub
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: .sarif.json
+          sarif_file: reports/robocop-output.sarif
           category: robocop
