@@ -38,7 +38,7 @@ jobs:
       # Run Robot Framework tests
       - name: Run Robot Framework tests
         run: |
-          poetry run robot --outputdir results tests/
+          poetry run robot --outputdir results .
 
       # Upload test reports as artifacts
       - name: Upload Robot Framework reports
