@@ -8,7 +8,7 @@ Resource          ../Keywords/SearchKeywords.robot
 Test Teardown    Clear SUT To Initial State
 
 *** Test Cases ***
-SearchTest
+SearchTestf
     Launch Application
     Search a Keyword
     Verify Search Result Page is shown
