@@ -20,20 +20,29 @@ jobs:
       - name: Set up Python
         run: python -m pip install --upgrade pip
 
-      - name: Install dependencies
-        run: pip install robotframework-robocop
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry --version  # Confirm Poetry installation
+
+      - name: Install dependencies with Poetry
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry install
+
 
       - name: Run robocop and generate SARIF output
         run: |
           mkdir -p reports
           # Run Robocop and capture exit code, but don't fail the step yet
-          python -m robocop --report sarif --output reports/robocop-output.sarif .
+          poetry run robocop --report sarif --output reports/roboco-output.sarif .
 
       - name: List files in current directory (debugging step)
-        run: ls -la
+        run: poetry run ls -la
 
       - name: Output SARIF file for inspection
-        run: cat reports/robocop-output.sarif
+        run: poetry run cat reports/robocop-output.sarif
 
       - name: Upload SARIF file to GitHub
         if: always()
