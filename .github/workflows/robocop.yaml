@@ -36,11 +36,15 @@ jobs:
         with:
           path: ~/.cache/pypoetry/virtualenvs
           key: ${{ runner.os }}-poetry-venv-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-venv-
 
       # Install Poetry and project dependencies (including dev dependencies)
       - name: Install Poetry and dependencies
         run: |
+          # Install Poetry
           curl -sSL https://install.python-poetry.org | python3 -
+          # Install dependencies
           poetry install --with dev
 
       # Run tests using pytest with coverage
