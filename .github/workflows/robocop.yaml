@@ -21,10 +21,16 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install robotframework-robocop
-      - name: Run robocop
-        run: python -m robocop --reports sarif .
-      - name: Upload SARIF file
+      - name: Run robocop and generate SARIF output
+        run: |
+          mkdir -p reports
+          python -m robocop --reports sarif --output reports/robocop-output.sarif . || true
+
+      - name: List files in reports directory (debugging step)
+        run: ls -la reports
+
+      - name: Upload SARIF file to GitHub
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: .sarif.json
+          sarif_file: reports/robocop-output.sarif
           category: robocop
