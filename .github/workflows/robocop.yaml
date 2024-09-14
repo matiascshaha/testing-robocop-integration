@@ -50,7 +50,7 @@ jobs:
         continue-on-error: true
         run: |
           echo "🧹 Cleaning up robot code stink with robotidy library..."
-          poetry run robotidy src/camsTest
+          poetry run robotidy
           poetry run python -m robocop --reports sarif .
 
       - name: Upload SARIF file
