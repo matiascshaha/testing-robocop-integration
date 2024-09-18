@@ -1,0 +1,49 @@
+name: testing123
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Runs daily at 2 AM UTC
+  workflow_dispatch:      # Allows manual triggering of the workflow
+
+jobs:
+  nightly-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.12]
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up Python based on matrix version
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Install Poetry and necessary dependencies (excluding dev dependencies)
+      - name: Install Poetry and production dependencies
+        run: |
+          # Install Poetry
+          curl -sSL https://install.python-poetry.org | python3 -
+          # Install only the production dependencies (no dev dependencies)
+          poetry install --only main
+
+      # Initialize the Browser library drivers (important for the Robot Framework)
+      - name: Initialize Browser library
+        run: |
+          poetry run rfbrowser init
+
+      # Run Robot Framework tests
+      - name: Run Robot Framework tests
+        run: |
+          poetry run robot --outputdir results .
+
+      # Upload test reports as artifacts
+      - name: Upload Robot Framework reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: Robot Framework Reports
+          path: ./
