@@ -1,0 +1,11 @@
+repos:
+  - repo: https://github.com/MarketSquare/robotframework-robocop
+    rev: stable
+    hooks:
+      - id: robocop
+        additional_dependencies: ["."]  # Ensures it uses the local environment
+  - repo: https://github.com/MarketSquare/robotframework-tidy
+    rev: stable
+    hooks:
+      - id: robotidy
+        additional_dependencies: ["."]  # Ensures it uses the local environment
